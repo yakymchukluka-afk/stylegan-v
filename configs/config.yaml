@@ -46,6 +46,7 @@ sampling:
 
 # Model settings to ensure interpolations work
 model:
+  name: stylegan-v  # Model name for experiment naming
   generator:
     time_enc:
       min_period_len: 16
