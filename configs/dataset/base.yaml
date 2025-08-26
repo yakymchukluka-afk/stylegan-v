@@ -1,6 +1,6 @@
 # @package _
-_target_: ~
-_recursive_: false
+# Base dataset configuration for StyleGAN-V
+# No _target_ needed as this is configuration data, not an instantiable object
 
 path: data/${dataset.name}.zip
 sampling: ${sampling}
