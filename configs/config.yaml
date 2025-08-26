@@ -13,3 +13,12 @@ defaults:
   - env: local
   - infra.yaml
   - training/base.yaml
+
+# MonoX compatibility - allows CLI overrides
+exp_suffix: null
+num_gpus: 1
+
+# Visualizer settings for MonoX
+visualizer:
+  save_every_kimg: 50
+  output_dir: previews
