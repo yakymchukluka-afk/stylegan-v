@@ -25,6 +25,7 @@ dataset:
   resolution: 1024
   c_dim: 0  # Conditional dimension (0 for unconditional generation)
   fps: 25   # Frames per second for video generation
+  max_num_frames: 16  # Maximum number of frames per video
 
 # Training settings for MonoX CLI overrides  
 training:
