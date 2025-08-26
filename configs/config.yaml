@@ -39,6 +39,7 @@ visualizer:
 sampling:
   truncation_psi: 1.0
   num_frames_per_video: 16  # Number of frames to generate per video
+  max_dist: 16  # Maximum distance between frames for sampling
 
 # Model settings to ensure interpolations work
 model:
