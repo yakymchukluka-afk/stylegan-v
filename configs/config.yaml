@@ -13,12 +13,27 @@ defaults:
   - env: local
   - infra.yaml
   - training/base.yaml
+  - _self_
 
 # MonoX compatibility - allows CLI overrides
 exp_suffix: null
 num_gpus: 1
 
+# Dataset settings for MonoX CLI overrides
+dataset:
+  path: null
+  resolution: 1024
+
+# Training settings for MonoX CLI overrides  
+training:
+  kimg: 3000
+  snap: 250
+
 # Visualizer settings for MonoX
 visualizer:
   save_every_kimg: 50
   output_dir: previews
+
+# Sampling settings for MonoX CLI overrides
+sampling:
+  truncation_psi: 1.0
