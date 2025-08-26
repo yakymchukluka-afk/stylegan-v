@@ -48,3 +48,8 @@ model:
   generator:
     time_enc:
       min_period_len: 16
+
+# Environment settings for StyleGAN-V execution
+env:
+  project_path: /content/MonoX/.external/stylegan-v
+  python_bin: python3
