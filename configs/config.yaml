@@ -19,6 +19,9 @@ defaults:
 exp_suffix: null
 num_gpus: 1
 
+# Experiment naming for StyleGAN-V
+experiment_name: ${dataset.name}_${model.name}_${sampling.name}
+
 # Dataset settings for MonoX CLI overrides
 dataset:
   path: null
