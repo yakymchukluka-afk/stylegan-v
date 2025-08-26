@@ -22,6 +22,14 @@ HYDRA_ARGS = "hydra.run.dir=. hydra.output_subdir=null hydra/job_logging=disable
 
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def main(cfg: DictConfig):
+    # Debug: Print fully composed config before instantiation
+    from omegaconf import OmegaConf
+    print("=" * 80)
+    print("FULL CONFIG DEBUG DUMP:")
+    print("=" * 80)
+    print(OmegaConf.to_yaml(cfg))
+    print("=" * 80)
+    
     recursive_instantiate(cfg)
     # Keep struct flexible for MonoX compatibility
     OmegaConf.set_struct(cfg, False)
