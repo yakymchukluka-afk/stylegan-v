@@ -22,6 +22,7 @@ num_gpus: 1
 # Experiment naming for StyleGAN-V
 experiment_name: ${dataset.name}_${model.name}_${sampling.name}
 git_hash: "unknown"  # Git hash for reproducibility tracking
+experiment_name_with_hash: ${experiment_name}_${git_hash}  # Full experiment identifier
 experiments_dir: /content/MonoX/experiments  # Top-level experiments directory
 
 # Dataset settings for MonoX CLI overrides
