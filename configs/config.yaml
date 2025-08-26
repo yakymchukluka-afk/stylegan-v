@@ -24,6 +24,7 @@ dataset:
   path: null
   resolution: 1024
   c_dim: 0  # Conditional dimension (0 for unconditional generation)
+  fps: 25   # Frames per second for video generation
 
 # Training settings for MonoX CLI overrides  
 training:
