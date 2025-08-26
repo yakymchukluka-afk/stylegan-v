@@ -1,4 +1,6 @@
-# @package _group_
+# @package _
+_target_: ~
+_recursive_: false
 
 name: mead_front_${dataset.resolution}
 fps: 30

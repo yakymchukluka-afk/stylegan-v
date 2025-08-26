@@ -1,5 +1,8 @@
-# @package _group_
+# @package _
+_target_: ~
+_recursive_: false
 
 name: rainbow_jelly_${dataset.resolution}
 resolution: 256
 fps: 30
+c_dim: 0

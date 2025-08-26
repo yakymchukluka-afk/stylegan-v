@@ -1,4 +1,7 @@
-# @package _group_
+# @package _
+_target_: ~
+_recursive_: false
 
 name: ffs_${dataset.resolution}_unstable
 fps: 30
+c_dim: 0

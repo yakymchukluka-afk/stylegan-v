@@ -1,4 +1,7 @@
-# @package _group_
+# @package _
+_target_: ~
+_recursive_: false
 
 name: sky_timelapse_${dataset.resolution}
 fps: 25
+c_dim: 0

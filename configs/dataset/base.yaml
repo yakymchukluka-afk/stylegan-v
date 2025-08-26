@@ -1,4 +1,6 @@
-# @package _group_
+# @package _
+_target_: ~
+_recursive_: false
 
 path: data/${dataset.name}.zip
 sampling: ${sampling}
