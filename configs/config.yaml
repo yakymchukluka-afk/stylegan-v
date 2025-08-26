@@ -38,3 +38,9 @@ visualizer:
 # Sampling settings for MonoX CLI overrides
 sampling:
   truncation_psi: 1.0
+
+# Model settings to ensure interpolations work
+model:
+  generator:
+    time_enc:
+      min_period_len: 16
