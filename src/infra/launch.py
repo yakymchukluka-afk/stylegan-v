@@ -20,10 +20,11 @@ HYDRA_ARGS = "hydra.run.dir=. hydra.output_subdir=null hydra/job_logging=disable
 
 #----------------------------------------------------------------------------
 
-@hydra.main(version_base=None, config_path="../../configs", config_name="config.yaml")
+@hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def main(cfg: DictConfig):
     recursive_instantiate(cfg)
-    OmegaConf.set_struct(cfg, True)
+    # Keep struct flexible for MonoX compatibility
+    OmegaConf.set_struct(cfg, False)
     cfg.env.project_path = str(cfg.env.project_path) # This is needed to evaluate ${hydra:runtime.cwd}
 
     before_train_cmd = '\n'.join(cfg.env.before_train_commands)
