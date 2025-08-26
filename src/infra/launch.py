@@ -12,7 +12,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from pathlib import Path
 
-from src.infra.utils import create_project_dir, recursive_instantiate
+from infra.utils import create_project_dir, recursive_instantiate
 
 #----------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ HYDRA_ARGS = "hydra.run.dir=. hydra.output_subdir=null hydra/job_logging=disable
 
 #----------------------------------------------------------------------------
 
-@hydra.main(config_path="../../configs", config_name="config.yaml")
+@hydra.main(version_base=None, config_path="../../configs", config_name="config.yaml")
 def main(cfg: DictConfig):
     recursive_instantiate(cfg)
     OmegaConf.set_struct(cfg, True)
