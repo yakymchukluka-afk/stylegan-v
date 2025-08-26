@@ -64,4 +64,5 @@ env:
   project_path: /content/MonoX/.external/stylegan-v
   python_bin: python3
   experiments_dir: /content/MonoX/experiments  # Directory for experiment outputs
+  datasets_dir: /content/drive/MyDrive/MonoX/dataset  # Directory containing datasets
   slurm_constraint: null  # No SLURM constraints in Colab environment
