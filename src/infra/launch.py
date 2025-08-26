@@ -12,7 +12,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from pathlib import Path
 
-from infra.utils import create_project_dir, recursive_instantiate
+from .utils import create_project_dir, recursive_instantiate
 
 #----------------------------------------------------------------------------
 
