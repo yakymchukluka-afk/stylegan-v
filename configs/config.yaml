@@ -11,7 +11,7 @@ defaults:
 
   - env/base.yaml
   - env: local
-  - infra.yaml
+  # - infra.yaml  # Commented out to avoid SLURM dependencies in Colab
   - training/base.yaml
   - _self_
 
