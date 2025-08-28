@@ -20,6 +20,7 @@ exp_suffix: null
 num_gpus: 1
 print_only: false  # Whether to only print the command without executing
 slurm: false  # Disable SLURM for Colab environment
+gpus: 1  # Number of GPUs for StyleGAN-V training
 
 # Experiment naming for StyleGAN-V
 experiment_name: ${dataset.name}_${model.name}_${sampling.name}
