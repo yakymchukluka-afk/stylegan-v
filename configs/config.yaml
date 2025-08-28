@@ -65,4 +65,5 @@ env:
   python_bin: python3
   experiments_dir: /content/MonoX/experiments  # Directory for experiment outputs
   datasets_dir: /content/drive/MyDrive/MonoX/dataset  # Directory containing datasets
+  before_train_commands: []  # Commands to run before training (empty for Colab)
   slurm_constraint: null  # No SLURM constraints in Colab environment
