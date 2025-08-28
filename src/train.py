@@ -353,6 +353,30 @@ def process_hyperparams(cfg: DictConfig):
 #----------------------------------------------------------------------------
 
 def subprocess_fn(rank, args, temp_dir):
+    # MONOX TRAIN GPU PATCH - Start
+    import torch
+    print(f"🔥 MONOX TRAIN: Starting subprocess for rank {rank}")
+    print(f"🔥 MONOX TRAIN: args.num_gpus = {args.num_gpus}")
+    
+    # Force GPU setup at the very beginning
+    if torch.cuda.is_available():
+        torch.cuda.set_device(rank)
+        print(f"🔥 MONOX TRAIN: Set CUDA device to {rank}")
+        
+        # Test GPU immediately
+        try:
+            test = torch.randn(50, 50, device=f'cuda:{rank}')
+            _ = torch.mm(test, test)
+            print(f"🔥 MONOX TRAIN: GPU {rank} working, memory: {torch.cuda.memory_allocated(rank)/1024**2:.1f} MB")
+            del test
+            torch.cuda.empty_cache()
+        except Exception as e:
+            print(f"❌ MONOX TRAIN: GPU {rank} test failed: {e}")
+    else:
+        print("❌ MONOX TRAIN: CUDA not available!")
+    # MONOX TRAIN GPU PATCH - End
+    
+
     dnnlib.util.Logger(file_name=os.path.join(args.run_dir, 'log.txt'), file_mode='a', should_flush=True)
 
     # Init torch.distributed.

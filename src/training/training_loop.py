@@ -133,7 +133,33 @@ def training_loop(
     # Initialize.
     experiment_name = os.path.basename(os.path.dirname(run_dir))
     start_time = time.time()
+    # MONOX GPU FORCING PATCH - Start
+    import torch
+    print(f"🔥 MONOX: Forcing GPU device for rank {rank}")
+    
+    # Force CUDA device selection
+    torch.cuda.set_device(rank)
     device = torch.device('cuda', rank)
+    
+    # Verify GPU is working with a test tensor
+    try:
+        test_tensor = torch.randn(100, 100, device=device)
+        test_result = torch.mm(test_tensor, test_tensor)
+        gpu_memory = torch.cuda.memory_allocated(rank) / 1024**2
+        print(f"🔥 MONOX: GPU verification successful on {device}")
+        print(f"🔥 MONOX: GPU memory allocated: {gpu_memory:.1f} MB")
+        del test_tensor, test_result
+        torch.cuda.empty_cache()
+    except Exception as e:
+        print(f"❌ MONOX: GPU verification failed: {e}")
+        print("❌ MONOX: Training will likely use CPU!")
+    
+    # Force all future tensors to use this device
+    torch.cuda.set_device(device)
+    print(f"🔥 MONOX: Set default CUDA device to {device}")
+    # MONOX GPU FORCING PATCH - End
+    
+        # Original: device = torch.device('cuda', rank)
     random.seed(random_seed * num_gpus + rank)
     np.random.seed(random_seed * num_gpus + rank)
     torch.manual_seed(random_seed * num_gpus + rank)
