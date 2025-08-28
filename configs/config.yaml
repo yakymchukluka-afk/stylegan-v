@@ -22,6 +22,12 @@ print_only: false  # Whether to only print the command without executing
 slurm: false  # Disable SLURM for Colab environment
 gpus: 1  # Number of GPUs for StyleGAN-V training
 
+# Training performance parameters (can be overridden)
+batch_size: 64  # Batch size for training
+fp32: false  # Use mixed precision training
+nobench: false  # Enable cuDNN benchmarking
+allow_tf32: false  # Allow TensorFloat-32 operations
+
 # Experiment naming for StyleGAN-V
 experiment_name: ${dataset.name}_${model.name}_${sampling.name}
 git_hash: "unknown"  # Git hash for reproducibility tracking
