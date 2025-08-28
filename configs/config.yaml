@@ -39,6 +39,7 @@ dataset:
 training:
   kimg: 3000
   snap: 250
+  resume: null  # Resume training from checkpoint (null = start fresh)
 
 # Visualizer settings for MonoX
 visualizer:
