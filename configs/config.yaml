@@ -66,4 +66,5 @@ env:
   experiments_dir: /content/MonoX/experiments  # Directory for experiment outputs
   datasets_dir: /content/drive/MyDrive/MonoX/dataset  # Directory containing datasets
   before_train_commands: []  # Commands to run before training (empty for Colab)
+  torch_extensions_dir: /tmp/torch_extensions  # PyTorch extensions cache directory
   slurm_constraint: null  # No SLURM constraints in Colab environment
