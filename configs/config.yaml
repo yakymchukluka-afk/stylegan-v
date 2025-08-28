@@ -70,3 +70,9 @@ env:
   before_train_commands: []  # Commands to run before training (empty for Colab)
   torch_extensions_dir: /tmp/torch_extensions  # PyTorch extensions cache directory
   slurm_constraint: null  # No SLURM constraints in Colab environment
+  objects_to_copy:  # Objects to copy to the experiment directory
+    - ${env.project_path}/src
+    - ${env.project_path}/configs
+  symlinks_to_create:  # Symlinks to create in the experiment directory
+    - ${env.project_path}/data
+  tmp_dir: /tmp  # Temporary directory for intermediate files
