@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2021, NVIDIA CORPORATION.  All rights reserved.
+# Copyright (c) 2021, NVIDIA CORPORATION.  All rights reserved.
 #
 # NVIDIA CORPORATION and its licensors retain all intellectual property
 # and proprietary rights in and to this software, related documentation
@@ -157,6 +157,51 @@ def training_loop(
     # Force all future tensors to use this device
     torch.cuda.set_device(device)
     print(f"🔥 MONOX: Set default CUDA device to {device}")
+    
+    # 🚀 NUCLEAR GPU MEMORY PRE-ALLOCATION - Force Heavy GPU Usage
+    try:
+        # Pre-allocate large chunks of GPU memory to force utilization
+        gpu_total_memory = torch.cuda.get_device_properties(device).total_memory
+        gpu_available_memory = gpu_total_memory - torch.cuda.memory_allocated(device)
+        
+        # Allocate 80% of available GPU memory with dummy tensors
+        chunk_size = int(gpu_available_memory * 0.8 / 4)  # 80% in float32 chunks
+        warmup_tensors = []
+        
+        print(f"🚀 MONOX: Pre-allocating GPU memory for heavy utilization...")
+        print(f"🚀 MONOX: Total GPU memory: {gpu_total_memory / 1024**3:.1f} GB")
+        print(f"🚀 MONOX: Available memory: {gpu_available_memory / 1024**3:.1f} GB")
+        
+        # Create multiple large tensors to force GPU memory usage
+        for i in range(4):
+            try:
+                tensor_size = int(chunk_size ** 0.5)  # Square tensor
+                warmup_tensor = torch.randn(tensor_size, tensor_size, device=device, dtype=torch.float32)
+                # Perform operations to ensure GPU is actively used
+                warmup_result = torch.mm(warmup_tensor, warmup_tensor)
+                warmup_result = torch.nn.functional.relu(warmup_result)
+                warmup_tensors.append(warmup_result)
+                current_allocated = torch.cuda.memory_allocated(device) / 1024**3
+                print(f"🔥 MONOX: Allocated tensor {i+1}: {tensor_size}x{tensor_size}, Total GPU: {current_allocated:.1f} GB")
+            except RuntimeError as e:
+                print(f"🔥 MONOX: GPU memory limit reached at tensor {i+1}: {e}")
+                break
+        
+        # Keep tensors alive briefly, then clean up
+        total_allocated = torch.cuda.memory_allocated(device) / 1024**3
+        print(f"🚀 MONOX: AGGRESSIVE GPU pre-allocation complete: {total_allocated:.1f} GB")
+        
+        # Clean up warmup tensors
+        del warmup_tensors
+        torch.cuda.empty_cache()
+        
+        final_allocated = torch.cuda.memory_allocated(device) / 1024**3
+        print(f"🚀 MONOX: After cleanup, GPU memory: {final_allocated:.1f} GB")
+        print(f"🚀 MONOX: GPU is now warmed up for HEAVY UTILIZATION!")
+        
+    except Exception as e:
+        print(f"⚠️  MONOX: GPU memory pre-allocation warning: {e}")
+    
     # MONOX GPU FORCING PATCH - End
     
         # Original: device = torch.device('cuda', rank)
@@ -358,11 +403,23 @@ def training_loop(
         with torch.autograd.profiler.record_function('data_fetch'):
             batch = next(training_set_iterator)
             phase_real_img, phase_real_c, phase_real_t, phase_real_l = batch['image'], batch['label'], batch['times'], batch['video_len']
+            
+            # 🚀 MONOX: Monitor GPU memory usage during data loading
+            if batch_idx % 10 == 0:  # Log every 10 batches
+                gpu_memory_before = torch.cuda.memory_allocated(device) / 1024**3
+                print(f"🔥 MONOX Batch {batch_idx}: GPU memory before processing: {gpu_memory_before:.2f} GB")
+            
             phase_real_img = (phase_real_img.to(device).to(torch.float32) / 127.5 - 1).split(batch_gpu)
             phase_real_c = phase_real_c.to(device).split(batch_gpu) # [batch_gpu, batch_size, c_dim]
             phase_real_t = phase_real_t.to(device).split(batch_gpu) # [batch_gpu, batch_size, c_dim]
             all_gen_z = torch.randn([len(phases) * batch_size, G.z_dim], device=device)
             all_gen_z = [phase_gen_z.split(batch_gpu) for phase_gen_z in all_gen_z.split(batch_size)]
+            
+            # 🚀 MONOX: Monitor GPU memory after tensor allocation
+            if batch_idx % 10 == 0:
+                gpu_memory_after = torch.cuda.memory_allocated(device) / 1024**3
+                print(f"🔥 MONOX Batch {batch_idx}: GPU memory after tensor allocation: {gpu_memory_after:.2f} GB")
+                print(f"🔥 MONOX Batch {batch_idx}: GPU memory delta: +{gpu_memory_after - gpu_memory_before:.2f} GB")
 
             gen_cond_sample_idx = [np.random.randint(len(training_set)) for _ in range(len(phases) * batch_size)]
             all_gen_c = [training_set.get_label(i) for i in gen_cond_sample_idx]

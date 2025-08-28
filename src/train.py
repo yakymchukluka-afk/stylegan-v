@@ -95,7 +95,14 @@ def process_hyperparams(cfg: DictConfig):
     #     class_name='training.dataset.ImageFolderDataset',
     #     path=data, use_labels=True, max_size=None, xflip=False)
 
-    args.data_loader_kwargs = dnnlib.EasyDict(pin_memory=True, num_workers=c.num_workers, prefetch_factor=2)
+    # 🚀 MONOX: AGGRESSIVE DataLoader optimization for GPU utilization
+    args.data_loader_kwargs = dnnlib.EasyDict(
+        pin_memory=True, 
+        num_workers=c.num_workers, 
+        prefetch_factor=4,  # Increased prefetch for GPU feeding
+        persistent_workers=True,  # Keep workers alive for efficiency
+        drop_last=True  # Ensure consistent batch sizes for GPU
+    )
     try:
         training_set = dnnlib.util.construct_class_by_name(**args.training_set_kwargs) # subclass of training.dataset.Dataset
 
