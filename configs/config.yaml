@@ -18,6 +18,7 @@ defaults:
 # MonoX compatibility - allows CLI overrides
 exp_suffix: null
 num_gpus: 1
+print_only: false  # Whether to only print the command without executing
 
 # Experiment naming for StyleGAN-V
 experiment_name: ${dataset.name}_${model.name}_${sampling.name}
