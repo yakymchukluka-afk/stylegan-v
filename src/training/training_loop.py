@@ -130,6 +130,11 @@ def training_loop(
     abort_fn                = None,     # Callback function for determining whether to abort training. Must return consistent results across ranks.
     progress_fn             = None,     # Callback function for updating training progress. Called for all ranks.
 ):
+    # 🚀 NUCLEAR DEBUG: Training loop started!
+    print("🚀🚀🚀 NUCLEAR: training_loop() function called!")
+    print(f"🚀🚀🚀 NUCLEAR: rank={rank}, num_gpus={num_gpus}, batch_size={batch_size}")
+    print(f"🚀🚀🚀 NUCLEAR: CUDA available: {torch.cuda.is_available()}")
+    
     # Initialize.
     experiment_name = os.path.basename(os.path.dirname(run_dir))
     start_time = time.time()
